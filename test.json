@@ -1,0 +1,98 @@
+{
+  "proxima2": {
+    "id": 0,
+    "firstName": "proxima2",
+    "middleName": "proxima2",
+    "lastName": "proxima2",
+    "idForContact": [],
+    "password": "$2a$10$EmD3qdnjuI6Hdac7EFZcs.88m/XQi0JT6kfc1uiwgfirUiG5Aa6/S",
+    "role": "ROLE_USER",
+    "token": "53f627f0138d9aedd2a1ef3720a9eeb6",
+    "email": "proxima2@gmail.com",
+    "userName": "proxima2",
+    "admin": false,
+    "contactMap": {
+      "-6471331256148725283": {
+        "id": 0,
+        "firstName": "proxima2",
+        "middleName": "proxima2",
+        "lastName": "proxima2",
+        "mobile_number": 434242323,
+        "home_number": 4343223,
+        "email": "proxima2@gmail.com",
+        "address": "proxima2City",
+        "idForXml": -6471331256148725283
+      },
+      "-5282940908660383248": {
+        "id": 0,
+        "firstName": "Taraska",
+        "middleName": "Taraska",
+        "lastName": "Taraska",
+        "mobile_number": 432432423,
+        "home_number": 4324322,
+        "email": "Taraska@gmail.com",
+        "address": "TaraskaCity",
+        "idForXml": -5282940908660383248
+      }
+    }
+  },
+  "proxima": {
+    "id": 0,
+    "firstName": "dsadsa",
+    "middleName": "dasdas",
+    "lastName": "dsadas",
+    "idForContact": [],
+    "password": "$2a$10$STZ8cd.BVBUAwqj6NjG/1eIs2lVP7Iay4P2tQp12y.Fb2s0jMy/uC",
+    "role": "ROLE_USER",
+    "token": "d3d707fdefd7b08821340ee0c9839af9",
+    "email": "prox@gmail.com",
+    "userName": "proxima",
+    "admin": false,
+    "contactMap": {
+      "6091229363520300980": {
+        "id": 0,
+        "firstName": "Vladik",
+        "middleName": "Vladdd",
+        "lastName": "Vladdd",
+        "mobile_number": 43424322,
+        "home_number": 432432423,
+        "email": "Vladdd@gmail.com",
+        "address": "VladddVladdd",
+        "idForXml": 6091229363520300980
+      },
+      "1953184102513829552": {
+        "id": 0,
+        "firstName": "BondJames",
+        "middleName": "BondJames",
+        "lastName": "BondJames",
+        "mobile_number": 432432432,
+        "home_number": 234232,
+        "email": "BondJames@gmail.com",
+        "address": "BondJames",
+        "idForXml": 1953184102513829552
+      },
+      "-3338173495395629614": {
+        "id": 0,
+        "firstName": "Mistika",
+        "middleName": "Mistika",
+        "lastName": "Mistika",
+        "mobile_number": 432423423,
+        "home_number": 432423,
+        "email": "Mistika@gmail.com",
+        "address": "MistikaCity",
+        "idForXml": -3338173495395629614
+      },
+      "-3266829985629758214": {
+        "id": 0,
+        "firstName": "Vova",
+        "middleName": "dsadasda",
+        "lastName": "dsadsadsa",
+        "mobile_number": 3423432,
+        "home_number": 432423,
+        "email": "dasd@gmai.com",
+        "address": "dasdas",
+        "idForXml": -3266829985629758214
+      }
+    }
+  }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Login page</title>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="container">
+
+        <form class="form-signin" role="form" th:action="@{/login}"
+              th:object="${accountEntity}" action="/login"
+              method="post">
+            <h2 class="form-signin-heading">Please login</h2>
+            <input id="inputName" type="text" name="username" class="form-control"
+                   placeholder="Username" required="required" autofocus="autofocus"/>
+
+            <input id="inputPassword" type="password" name="password" class="form-control"
+                   placeholder="Password"/>
+
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"/> Remember me
+            </label>
+
+            <button type="reset" class="btn btn-primary btn-md" data-toggle="modal"
+                    data-target="#myModal">Sign in
+            </button>
+
+            <button th:id="login" type="submit" class="btn btn-primary btn-md">Log in</button>
+
+            <div class="alert alert-danger" th:if="${param.error}">
+                Email and password is incorrect or your account is not activated, please try again.
+            </div>
+
+        </form>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+
+                <!-- Modal content-->
+                <div class="modal-content model-container">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="register-title">Please, register</h2>
+                    </div>
+                    <div class="modal-body modal-body-height">
+                        <form class="form-signin" role="form" action="/user/register" th:object="${accountEntity}"
+                              th:action="@{/user/register}" method="post">
+                            <!--<h2 class="form-signin-heading">Registration</h2>-->
+                            <input id="firstName" name="firstName" type="text" class="form-control"
+                                   placeholder="First name"
+                                   required="required" autofocus="autofocus"/>
+                            <input id="middleName" name="middleName" type="text" class="form-control"
+                                   placeholder="Middle name" required="required"/>
+                            <input id="lastName" name="lastName" type="text" class="form-control"
+                                   placeholder="Last name" required="required"/>
+                            <input id="userName" name="userName" type="text" class="form-control"
+                                   placeholder="Username" required="required"/>
+                            <input type="text" id="inputEmail" name="email" class="form-control top"
+                                   placeholder="Email"
+                                   required="required"/>
+                            <input id="password" name="password" type="password" class="form-control"
+                                   placeholder="Password"/>
+                            <label class="checkbox">
+                                <input type="checkbox" value="remember-me"/> Remember me
+
+                            </label>
+                            <button id="on_modal" class="btn btn-primary btn-md " type="submit">Sign in</button>
+
+                            <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+                                <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username
+                                    error
+                                </div>
+                                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name
+                                    error
+                                </div>
+                                <div th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}">middle
+                                    name
+                                    error
+                                </div>
+                                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name
+                                    error
+                                </div>
+                                <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password
+                                    error
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-default btn-md" data-dismiss="modal">Close</button>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>
