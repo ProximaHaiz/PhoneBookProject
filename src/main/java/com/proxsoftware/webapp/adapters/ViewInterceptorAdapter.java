@@ -3,6 +3,7 @@ package com.proxsoftware.webapp.adapters;
 import com.proxsoftware.webapp.service.AccountServiceIml1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Configuration
+@EnableWebSecurity
 public class ViewInterceptorAdapter extends HandlerInterceptorAdapter {
 
     @Autowired

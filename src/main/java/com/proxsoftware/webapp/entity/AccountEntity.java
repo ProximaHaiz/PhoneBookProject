@@ -5,7 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -14,34 +14,15 @@ import java.util.*;
 @JsonIgnoreProperties({"contacts"})
 public class AccountEntity extends AbstractEntity {
 
-    @XStreamAlias(value = "contacts_id")
-    private List<Integer> idForContact = new ArrayList<>();
-
-    public void setOneXmlId(Integer id) {
-        idForContact.add(id);
-    }
-
-    @Transient
-    public List<Integer> getIdForContact() {
-        return idForContact;
-    }
-
-    public void setIdForContact(List<Integer> idForContact) {
-        this.idForContact = idForContact;
-    }
-
     private String password;
     private String role = "ROLE_USER";
     private String token;
     private String email;
     private String userName;
 
-
     @Basic
     @Column(name = "user_name", length = 45)
-//    @Size(min = 3)
-
-    @NotNull(message = "blabla")
+    @Size(min = 4, max = 15, message = "length must be more than 4 characters")
     public String getUserName() {
         return userName;
     }
@@ -63,7 +44,7 @@ public class AccountEntity extends AbstractEntity {
     public AccountEntity() {
     }
 
-    @XStreamOmitField()//do not write to XML\JSON
+    @XStreamOmitField()
     private Set<ContactEntity> contacts = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -76,8 +57,7 @@ public class AccountEntity extends AbstractEntity {
     }
 
 
-    @XStreamAlias(value = "contactsMapppp")
-//    @XStreamConverter(value = MapConverter.class)
+    @XStreamAlias(value = "contactsMap")
     private Map<Long, ContactEntity> contactMap = new HashMap();
 
     @Transient
@@ -90,7 +70,7 @@ public class AccountEntity extends AbstractEntity {
     }
 
     public void addContactToMap(ContactEntity contact) {
-        contactMap.put(contact.getIdForXml(), contact);
+        contactMap.put(contact.getId(), contact);
     }
 
     public AccountEntity(long id, String firstName, String middleName,
@@ -116,18 +96,18 @@ public class AccountEntity extends AbstractEntity {
         this.middleName = middleName;
     }
 
-    public AccountEntity(String userName, String password, String firstName, String lastName, String middleName) {
+    public AccountEntity(String userName, String password, String firstName, String lastName, String middleName,String email) {
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
+        this.email = email;
     }
-
 
     @Basic
     @Column(name = "password", length = 45)
-//    @Size(min = 5)
+    @Size(min = 5, max = 70, message = "length must be more than 5 characters")
     public String getPassword() {
         return password;
     }
@@ -142,7 +122,6 @@ public class AccountEntity extends AbstractEntity {
     }
 
     public void setAdmin(boolean admin) {
-
     }
 
     public void addContact(ContactEntity contact) {
@@ -161,6 +140,9 @@ public class AccountEntity extends AbstractEntity {
         return token;
     }
 
+//    @Email(message = "invalid email")
+    @Basic
+    @Column(name = "email",length = 45)
     public String getEmail() {
         return email;
     }
@@ -188,7 +170,6 @@ public class AccountEntity extends AbstractEntity {
     @Override
     public String toString() {
         return "AccountEntity{" +
-                "idForContact=" + idForContact +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", token='" + token + '\'' +

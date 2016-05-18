@@ -1,6 +1,7 @@
 package com.proxsoftware.webapp.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  * Created by Proxima on 17.04.2016.
@@ -12,6 +13,7 @@ public abstract class AbstractEntity {
     protected String firstName;
     protected String middleName;
 
+    @Size(min = 4,message = "length must be more than 4 characters")
     public String getLastName() {
         return lastName;
     }
@@ -21,6 +23,7 @@ public abstract class AbstractEntity {
 
     @Basic
     @Column(name = "first_name")
+    @Size(min = 4,message = "length must be more than 4 characters")
     public String getFirstName() {
         return firstName;
     }
@@ -31,6 +34,7 @@ public abstract class AbstractEntity {
 
     @Basic
     @Column(name = "middle_name")
+    @Size(min = 4,message = "length must be more than 4 characters")
     public String getMiddleName() {
         return middleName;
     }

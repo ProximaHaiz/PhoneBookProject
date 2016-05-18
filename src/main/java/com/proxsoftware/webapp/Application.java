@@ -6,25 +6,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Configuration
 @SpringBootApplication
-@PropertySource("classpath:app.properties")
+@PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = {"com.proxsoftware.webapp.*"})
+@EnableTransactionManagement
+//@EntityScan(basePackageClasses = new Clas)
 public class Application implements EmbeddedServletContainerCustomizer {
 
-    @Value(value = "file_uri")
+
+    @Value(value = "${file_uri}")
     private static String FILE_URI;
 
-
-
     public static void main(String[] args) {
-        System.out.println("BeforeFrom run " + FILE_URI);
+        System.out.println("from run " + FILE_URI);
         SpringApplication.run(Application.class, args);
-        System.out.println("AfterFrom run " + FILE_URI);
-
     }
 
     @Override
@@ -32,4 +30,32 @@ public class Application implements EmbeddedServletContainerCustomizer {
         System.out.println("from costomize");
         container.setPort(8083);
     }
+
+    /*@Configuration
+    public static class BeanPostProcessorConfiguration {
+        @Autowired
+        ApplicationContext context;
+        int count = 0;
+
+        @Bean
+        public BeanPostProcessor beanPostProcessor() {
+            Environment environment = context.getEnvironment();
+            environment.acceptsProfiles("dev");
+
+            return new BeanPostProcessor() {
+                @Override
+                public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+//                    System.out.println("Active Profile is: " + Arrays.toString(environment.getActiveProfiles()));
+                    return bean;
+                }
+
+                @Override
+                public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+                    return bean;
+                }
+
+            };
+
+        }
+    }*/
 }

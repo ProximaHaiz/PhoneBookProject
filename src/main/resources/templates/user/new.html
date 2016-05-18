@@ -2,55 +2,84 @@
 
 <head>
     <link th:href="@{/css/sticky-footer-navbar.css}" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}" media="all"/>
+    <link type="text/css" th:href="@{/css/signin.css}" rel="stylesheet"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script th:src="@{/js/jquery.maskedinput.min.js}"></script>
+    <script th:src="@{/js/is.mobile.js}"></script>
+
+    <!--js for mobile phone and home phone input-->
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/script_home_number.js}"></script>
+
 </head>
 <div layout:fragment="content">
-    <form method="post" class="form-horizontal" name="comment_form" id="comment_form" action="/data/create"
-          role="form">
-        <div class="form-group">
-
-            <label class="control-label col-sm-2" for="firstName">First name</label>
-
-            <div class="col-sm-3"><input class="form-control" id="firstName" name="firstName"
-                                         required="required" /></div>
+    <form method="post" class="form-horizontal form-aligin" name="create_form" id="comment_form" action="/data/create"
+          role="form" th:object="${contactEntity}">
+        <div class="col-sm-3 col-md-offset-4 form_title h2">
+            <h3>Creating new contact</h3>
         </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="lastName">Last name</label>
+        <div class="form-group field_group_bottom ">
+            <div class="col-sm-3 col-md-offset-4"><input type="text" class="form-control" id="firstName"
+                                                         name="firstName" required="required" placeholder="First name"/>
+            </div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
 
-            <div class="col-sm-3"><input class="form-control" id="lastName" name="lastName"/></div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="middleName">Middle name</label>
-
-            <div class="col-sm-3"><input class="form-control" id="middleName" name="middleName"/></div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="mobile_number">Mobile number</label>
-
-            <div class="col-sm-3"><input class="form-control" id="mobile_number" name="mobile_number"/></div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="home_number">Home number</label>
-
-            <div class="col-sm-3"><input  class="form-control" id="home_number" name="home_number"/></div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="address">Address</label>
-
-            <div class="col-sm-3"><input class="form-control" id="address" name="address"/></div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="email">E-mail</label>
-
-            <div class="col-sm-3"><input type="email" class="form-control" id="email" name="email"/></div>
         </div>
 
+        <div class="form-group field_group_bottom">
+            <div class="col-sm-3 col-md-offset-4"><input class="form-control" id="lastName" name="lastName"
+                                                         placeholder="Last name" required="required"/></div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
 
-        <div class=" col-sm-5 new_form">
+        </div>
+
+        <div class="form-group field_group_bottom">
+            <div class="col-sm-3 col-md-offset-4"><input class="form-control" id="middleName" name="middleName"
+                                                         placeholder="Middle name" required="required"/></div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></div>
+
+        </div>
+
+        <div class="form-group field_group_bottom">
+            <div class="user_phone col-sm-3 col-md-offset-4">
+                <input class="form-control" type="tel" required="required" pattern="[0-9_-]{10}"
+                       id="user_phone" name="mobile_number" title="Формат: (096) 999 99 99"/>
+            </div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('mobile_number')}" th:errors="*{mobile_number}"></div>
+
+        </div>
+
+        <div class="form-group field_group_bottom">
+            <div class="user_phone col-sm-3 col-md-offset-4">
+                <input class="form-control" id="home_number" name="home_number" placeholder="Home number"/>
+            </div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('home_number')}" th:errors="*{home_number}"></div>
+
+        </div>
+
+        <div class="form-group field_group_bottom">
+            <div class="col-sm-3 col-md-offset-4"><input class="form-control" id="address" name="address"
+                                                         placeholder="Address"/></div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+
+        </div>
+
+        <div class="form-group field_group_bottom">
+            <div class="col-sm-3 col-md-offset-4"><input type="email" class="form-control" id="email" name="email"
+                                                         placeholder="Email"/>
+            </div>
+            <div class="col-sm-3 error " th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+            <input type="text" th:hidden="hidden" th:value="${contactEntity.getId()}" id="id" name="id"/>
+        </div>
+
+        <div class=" col-sm-3 new_form col-md-offset-4 buttons">
             <a class="btn btn-primary" th:href="@{/data/get}">Cancel</a>
             <button type="submit" id="cancel" class="btn btn-primary ">Submit</button>
         </div>
-
-
     </form>
+
 </div>
 </html>

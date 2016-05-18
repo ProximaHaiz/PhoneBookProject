@@ -1,14 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">>
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico"/>
-
-    <title>Signin Template for Bootstrap</title>
+    <title>Register Account</title>
 
     <!-- Bootstrap core CSS -->
     <link type="text/css" th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -16,36 +16,79 @@
     <!-- Custom styles for this template -->
     <link type="text/css" th:href="@{/css/signin.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link th:href="@{/css/sticky-footer-navbar.css}" rel="stylesheet"/>
 
-
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+
 </head>
 
 <body>
+<div layout:fragment="content">
 
-<div class="container">
+    <div class="container">
 
-    <form class="form-signin" role="form">
-        <h2  class="form-signin-heading">Registration</h2>
-        <input type="email" class="form-control" placeholder="Email address"  />
-        <input type="text" class="form-control" placeholder="Name" />
-        <input type="password" class="form-control" placeholder="Password" />
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me"/> Remember me
-        </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+        <form class="form-horizontal form-aligin" role="form" action="/user/register" th:object="${accountEntity}"
+              th:action="@{/user/register}" method="post">
+            <div class="col-sm-3 col-md-offset-4 form_title h2">
+                <h3>Registration</h3>
+            </div>
+            <div class="form-group field_group_bottom ">
+                <div class="col-sm-3 col-md-offset-4"><input id="firstName" name="firstName" type="text"
+                                                             class="form-control"
+                                                             placeholder="First name" required="required"
+                                                             autofocus="autofocus"/>
+                </div>
+                <div class="col-sm-3 error " th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
 
-</div> <!-- /container -->
+            </div>
 
+            <div class="form-group field_group_bottom">
+                <div class="col-sm-3 col-md-offset-4"><input id="lastName" name="lastName" type="text"
+                                                             class="form-control"
+                                                             placeholder="Last name" required="required"/></div>
+                <div class="col-sm-3 error " th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+            </div>
+
+            <div class="form-group field_group_bottom">
+                <div class="col-sm-3 col-md-offset-4"><input id="middleName" name="middleName" type="text"
+                                                             class="form-control"
+                                                             placeholder="Middle name" required="required"/></div>
+                <div class="col-sm-3 error " th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></div>
+            </div>
+
+            <div class="form-group field_group_bottom">
+                <div class=" col-sm-3 col-md-offset-4">
+                    <input id="userName" name="userName" type="text" class="form-control"
+                           placeholder="Username" required="required"/>
+                </div>
+                <div class="col-sm-3 error " th:if="${#fields.hasErrors('userName')}"
+                     th:errors="*{userName}"></div>
+            </div>
+
+            <div class="form-group field_group_bottom">
+                <div class="col-sm-3 col-md-offset-4"><input type="text" id="inputEmail" name="email"
+                                                             class="form-control top"
+                                                             placeholder="Email" required="required"/></div>
+                <div class="col-sm-3 error " th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <div class="form-group field_group_bottom">
+                <div class="col-sm-3 col-md-offset-4"><input  id="password" name="password" type="password"
+                                                             class="form-control"
+                                                             placeholder="Password"/></div>
+                <div class="col-sm-3 error " th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            </div>
+
+            <div class="col-sm-3 new_form col-md-offset-4 buttons">
+                <a id="cancel_button" class="btn btn-primary btn-md" th:href="@{/login}">Cancel</a>
+                <button id="reg_button" th:id="login" type="submit" class="btn btn-primary btn-md">Register</button>
+            </div>
+        </form>
+    </div> <!-- /container -->
+</div>
 </body>
 </html>

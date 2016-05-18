@@ -5,23 +5,14 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <!--<link rel="icon" href="../../favicon.ico"/>-->
-
+    <meta name="author" content="Vladimir Karpov"/>
     <title>Spring Boot Web Application</title>
-
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
           crossorigin="anonymous"/>
     <link type="text/css" th:href="@{/css/signin.css}" rel="stylesheet"/>
     <link th:href="@{/css/sticky-footer-navbar.css}" rel="stylesheet"/>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-            integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
-            crossorigin="anonymous"></script>-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -29,45 +20,37 @@
 </head>
 
 <body>
-
 <!-- Fixed navbar -->
 <!--<nav class="navbar navbar-default navbar-fixed-top">-->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+                <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Spring-starter</a>
+            <a class="navbar-brand" href="/data/get"><span class="glyphicon glyphicon-home" ></span> Home</a>
+
         </div>
         <div class="navbar-collapse collapse">
+            <div class="logged" th:if="${g_user}">
+                Now logged: <span th:text="${g_user.email}"></span>
+            </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a th:href="@{/user/reset-password}" href="reset">Reset Password</a></li>
-                <li><a th:href="@{/user/register}" href="register">Register</a></li>
-                <li><a th:href="@{/login}" href="/login">Login</a></li>
-                <li><a th:href="@{/logout}" href="/logout"><i class="icon-chevron-left"></i>Logout</a></li>
+                <li><a th:href="@{/user/reset-password}" href="reset"> <span class="glyphicon glyphicon-refresh"></span>Reset Password</a></li>
+                <li><a th:href="@{/user/register}" href="register"> <span class="glyphicon glyphicon-user"></span>Sign up</a></li>
+                <li><a th:href="@{/login}" href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a th:href="@{/logout}" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <div class="table2">
-
-        <div layout:fragment="content">
-
-        </div>
-
-    </div>
+        <div layout:fragment="content"></div>
 </div>
 <!-- /.container -->
-
 <footer class="footer">
-    <footer>
-        <p class="pull-right" th:if="${g_user}">
-            Logged in as: <span th:text="${g_user.email}">my email</span>
-        </p>
-    </footer>
     <div class="container">
         <p class="text-muted">Developed by Karpov Vladimir, 2016 </p>
     </div>

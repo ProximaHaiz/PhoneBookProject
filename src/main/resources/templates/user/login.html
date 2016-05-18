@@ -12,10 +12,9 @@
 <body>
 <div layout:fragment="content">
 
-    <div class="container">
+    <!--<div class="container">-->
 
-        <form class="form-signin" role="form" th:action="@{/login}"
-              th:object="${accountEntity}" action="/login"
+        <form class="form-signin" role="form" th:action="@{/login}" th:object="${accountEntity}" action="/login"
               method="post">
             <h2 class="form-signin-heading">Please login</h2>
             <input id="inputName" type="text" name="username" class="form-control"
@@ -24,27 +23,32 @@
             <input id="inputPassword" type="password" name="password" class="form-control"
                    placeholder="Password"/>
 
-            <label class="checkbox">
+            <!--<label class="checkbox">
                 <input type="checkbox" value="remember-me"/> Remember me
-            </label>
+            </label>-->
 
-            <button type="reset" class="btn btn-primary btn-md" data-toggle="modal"
+            <!--<button type="reset" class="btn btn-primary btn-md" data-toggle="modal"
                     data-target="#myModal">Sign in
-            </button>
+            </button>-->
+
+            <a id="singin_login" class="btn btn-primary btn-md" th:href="@{/user/register}">Sign in</a>
 
             <button th:id="login" type="submit" class="btn btn-primary btn-md">Log in</button>
 
-            <div class="alert alert-danger" th:if="${param.error}">
-                Email and password is incorrect or your account is not activated, please try again.
+            <div th:if="${#fields.hasErrors()}" class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Danger!</strong> Invalidate incomming data
             </div>
 
         </form>
 
         <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
+        <!--Всплывающее окно регистрации-->
+
+        <!--<div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-sm">
 
-                <!-- Modal content-->
+                &lt;!&ndash; Modal content&ndash;&gt;
                 <div class="modal-content model-container">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -53,10 +57,10 @@
                     <div class="modal-body modal-body-height">
                         <form class="form-signin" role="form" action="/user/register" th:object="${accountEntity}"
                               th:action="@{/user/register}" method="post">
-                            <!--<h2 class="form-signin-heading">Registration</h2>-->
-                            <input id="firstName" name="firstName" type="text" class="form-control"
+                            &lt;!&ndash;<h2 class="form-signin-heading">Registration</h2>&ndash;&gt;
+                            <input id="firstName" name="firstName" type="text" class="form-control error"
                                    placeholder="First name"
-                                   required="required" autofocus="autofocus"/>
+                                   required="required" autofocus="autofocus" />
                             <input id="middleName" name="middleName" type="text" class="form-control"
                                    placeholder="Middle name" required="required"/>
                             <input id="lastName" name="lastName" type="text" class="form-control"
@@ -73,11 +77,10 @@
 
                             </label>
                             <button id="on_modal" class="btn btn-primary btn-md " type="submit">Sign in</button>
+                            &lt;!&ndash;<a id="on_modal" class="btn" type="submit">Sign in</a>&ndash;&gt;
 
                             <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
-                                <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username
-                                    error
-                                </div>
+                                <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" ></div>
                                 <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name
                                     error
                                 </div>
@@ -95,13 +98,13 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-default btn-md" data-dismiss="modal">Close</button>-->
+                        &lt;!&ndash;<button type="button" class="btn btn-default btn-md" data-dismiss="modal">Close</button>&ndash;&gt;
                     </div>
                 </div>
 
             </div>
-        </div>
-    </div>
+        </div>-->
+    <!--</div>-->
 </div> <!-- /container -->
 
 

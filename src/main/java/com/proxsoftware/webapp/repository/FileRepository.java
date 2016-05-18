@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.io.*;
+import javax.servlet.http.HttpSession;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -19,14 +22,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by Proxima on 22.04.2016.
- */
-@Repository
-public class XmlRepository {
-    public XmlRepository() {
 
-    }
+@Repository
+public class FileRepository {
 
     private boolean fileIsEmpty;
     @Autowired
@@ -36,20 +34,17 @@ public class XmlRepository {
         return utils;
     }
 
-    private String accountUserName;
+    @Autowired
+    HttpSession session;
 
-
-  /*  public XmlRepository(String FILE_URI) {
-        utils = new XmlUtils(FILE_URI);
-    }*/
-
-    private Logger log = LoggerFactory.getLogger(XmlRepository.class);
+    private Logger log = LoggerFactory.getLogger(FileRepository.class);
 
     private Map<String, AccountEntity> accountContainer = new HashMap<>();
 
     AccountEntity addAccount(AccountEntity account) {
-        getAllAccounts();
-        accountContainer.put(account.getUserName(), account);
+        Map<String, AccountEntity> allAccounts = getAllAccounts();
+        allAccounts.put(account.getUserName(), account);
+//        accountContainer.putAll(allAccounts);
         System.out.println(accountContainer.size());
         doWriteToFile();
         return account;
@@ -64,10 +59,10 @@ public class XmlRepository {
             accountContainer.clear();
             getAllAccounts();
             System.out.println("Contact from AddContact:" + contact);
-            if (contact.getIdForXml() == 0) {
-                contact.setIdForXml(contactIdGenerator());
+            if (contact.getId() == 0) {
+                contact.setId(contactIdGenerator());
             }
-            accountContainer.get(account.getUserName()).getContactMap().put(contact.getIdForXml(), contact);
+            accountContainer.get(account.getUserName()).getContactMap().put(contact.getId(), contact);
             addAccounts();
         } else {
             throw new FileEmptyException("File " + utils.getFILE_URI() + " is empty");
@@ -104,23 +99,9 @@ public class XmlRepository {
         }
     }
 
-    public ContactEntity getContact(AccountEntity account, long id) {
-        ContactEntity contact = account.getContactMap().get(id);
-        return contact != null ? contact : null;
-    }
-
     public void deleteContact(AccountEntity account, long contactKey) {
         account.getContactMap().remove(contactKey);
         addAccount(account);
-    }
-
-    public List<ContactEntity> getAllAccounts(AccountEntity account) {
-        Map<Long, ContactEntity> contactMap = account.getContactMap();
-        return contactMap.values().stream().collect(Collectors.toList());
-    }
-
-    public ContactEntity findContactById(AccountEntity account, long id) {
-        return account.getContactMap().values().stream().filter(entity -> entity.getIdForXml() == id).findFirst().get();
     }
 
     public AccountEntity findAccountByUserNameOrEmail(String userName, String email) {
@@ -137,19 +118,48 @@ public class XmlRepository {
         return values.stream().filter(account -> account.getRole().equals(token)).findFirst().get();
     }
 
-    public void deleteAccount(Long id) {
-        Map<String, AccountEntity> accounts = getAllAccounts();
-        accounts.remove(accounts.values().stream().filter(account -> account.getId() == id).findFirst().get().getUserName());
+    public List<ContactEntity> findAllContacts(AccountEntity account) {
+        account = getAccount(account.getUserName());
+        Map<Long, ContactEntity> contactMap = account.getContactMap();
+        Collection<ContactEntity> values = contactMap.values();
+        if (!values.isEmpty()) {
+            return values.stream().collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
-    public void deleteAccount(AccountEntity account) {
+    public void deleteAccount(Long id) {
         Map<String, AccountEntity> accounts = getAllAccounts();
-        accounts.remove(account.getUserName());
+        AccountEntity removed = accounts.remove(accounts.values().stream().filter(account -> account.getId() == id).findFirst().get().getUserName());
+        accountContainer.putAll(accounts);
+        doWriteToFile();
     }
 
     public void updateAccount(String userName, String firstName, String lastName, String middleName) {
         Map<String, AccountEntity> accounts = getAllAccounts();
-        AccountEntity account = accounts.remove(getAccountUserName());
+        AccountEntity account = accounts.remove(/*SecurityContextHolder.getContext().getAuthentication().getName()*/userName);
+        account.setFirstName(firstName);
+        account.setUserName(userName);
+        account.setLastName(lastName);
+        account.setMiddleName(middleName);
+        accounts.put(account.getUserName(), account);
+
+        accountContainer.clear();
+        accountContainer.put(account.getUserName(), account);
+        doWriteToFile();
+        accountContainer.clear();
+    }
+
+    /**
+     * This method used only for testing, because can't invoke SecurityContextHolder.getContext().getAuthentication().getName()
+     * when testing
+     *
+     * @param oldUSerName - name of current logged user
+     */
+    public void updateAccount(String userName, String firstName, String lastName, String middleName, String oldUSerName) {
+        Map<String, AccountEntity> accounts = getAllAccounts();
+        AccountEntity account = accounts.remove("testUser2");
         account.setFirstName(firstName);
         account.setUserName(userName);
         account.setLastName(lastName);
@@ -160,10 +170,6 @@ public class XmlRepository {
         accountContainer.putAll(accounts);
         doWriteToFile();
         accountContainer.clear();
-    }
-
-    public void updateContact(ContactEntity contact) {
-
     }
 
     private Map<String, AccountEntity> doReadFromFile() {
@@ -184,9 +190,7 @@ public class XmlRepository {
                         }));
                         break;
                 }
-            } /*else {
-                return accountContainer;
-            }*/
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();
@@ -238,26 +242,4 @@ public class XmlRepository {
         }
         return false;
     }
-
-
-    //<editor-fold desc="get\set">
-    private ObjectOutputStream getObjectOutputStream() throws IOException {
-        return utils.getxStream().createObjectOutputStream(
-                new FileOutputStream(utils.getFILE_URI()));
-    }
-
-    private ObjectInputStream getObjectIntputStream() throws IOException {
-        return utils.getxStream().createObjectInputStream(
-                new FileInputStream(utils.getFILE_URI()));
-    }
-
-    public String getAccountUserName() {
-        return accountUserName;
-    }
-
-    public void setAccountUserName(String accountUserName) {
-        this.accountUserName = accountUserName;
-    }
-    //</editor-fold>
-
 }

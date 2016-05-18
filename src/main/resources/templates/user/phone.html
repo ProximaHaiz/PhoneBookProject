@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<link th:href="@{/css/sticky-footer-navbar.css}" rel="stylesheet"/>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<form action="#" method="post" class="phone_form">
+
+    <div class="user_phone">
+        <input type="tel"  pattern="[0-9_-]{10}" title="Формат: (096) 999 99 99"
+               placeholder="(___) ___ __ __" id="user_phone" />
+    </div>
+
+    <input type="submit" class="btn_submit" />
+
+</form>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="jquery.maskedinput.min.js"></script>
+<script src="script_form.js"></script>-->
+<script th:src="@{/script_form.js}"></script>
+<script th:src="@{/jquery.maskedinput.min.js}"></script>
+<script th:src="@{/http//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js}"></script>
+</body>
+</html>

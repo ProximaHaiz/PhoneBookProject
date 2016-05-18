@@ -7,12 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@EnableWebSecurity
 public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
 
 
@@ -25,6 +28,10 @@ public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
    /* @Value("${app.secret}")
     private String applicationSecret;*/
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,9 +39,11 @@ public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/user/activate").permitAll()
                 .antMatchers("/user/autologin").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/user/delete").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/user/deleteContactEntityById").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/fonts*").permitAll()
-//                .antMatchers("/data/get").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/images/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()

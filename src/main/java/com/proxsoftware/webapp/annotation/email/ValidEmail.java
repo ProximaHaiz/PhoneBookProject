@@ -1,4 +1,4 @@
-package com.proxsoftware.webapp.annotation;
+package com.proxsoftware.webapp.annotation.email;
 
 
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;

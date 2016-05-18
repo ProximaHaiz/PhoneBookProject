@@ -5,31 +5,7 @@
 
 <head>
     <title>Contact List</title>
-    <!--<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    &lt;!&ndash; The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags &ndash;&gt;
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    &lt;!&ndash;<link rel="icon" href="../../favicon.ico"/>&ndash;&gt;
-
-    <title>Spring Boot Web Application</title>
-
-    &lt;!&ndash; Bootstrap core CSS &ndash;&gt;
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-          crossorigin="anonymous"/>
-    <link th:href="@{/css/sticky-footer-navbar.css}" rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-            integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
-            crossorigin="anonymous"></script>
-
-    &lt;!&ndash;script for search string&ndash;&gt;
-    -->
-    <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/jquery.searchable.js}"></script>
-
 </head>
 
 <body>
@@ -64,7 +40,7 @@
                     <td data-th-text="${contacts.getAddress()}"></td>
                     <td data-th-text="${contacts.getEmail()}"></td>
                     <td class="danger">
-                        <a th:href="@{'/data/{id}/delete'(id=${contacts.getIdForXml()})}" class="delete"
+                        <a th:href="@{'/data/{id}/delete'(id=${contacts.getId()})}" class="delete"
                            th:attr="name=${contacts.getFirstName()} " data-toggle="tooltip"
                            data-placement="top" title="Delete contact">
                         <span class="fa-stack">
@@ -74,7 +50,7 @@
                     </td>
 
                     <td class="danger">
-                        <a th:href="@{'/data/{id}/edit'(id=${contacts.getIdForXml()})}" class="edit"
+                        <a th:href="@{'/data/{id}/edit'(id=${contacts.getId()})}" class="edit"
                            th:attr="name=${contacts.getFirstName()}" data-toggle="tooltip"
                            data-placement="top" title="Edit contact">
                     <span class="fa-stack">
@@ -88,10 +64,8 @@
             </table>
         </div>
         <div class="well well-sm">
-            <a class="btn btn-primary" href="/data/new">Add</a>
+            <a class="btn btn-primary" href="/data/new"><span class="glyphicon glyphicon-plus"> New contact</span></a>
         </div>
-
-        <a class="btn btn-primary" href="/data/new">Add new post</a>
     </div>
     <div class="footer">
         <h5>Developted by Karpov Vladimir, 2016</h5>

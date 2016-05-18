@@ -1,14 +1,64 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
-<head>
-<title>HOME</title>
-</head>
-<body>
-    <div layout:fragment="content">
-        <h1>Welcome to Spring-starter</h1>
-        Index.html file, please your content here
-        <p>Check out the sample @RestController <a href="/sample/json">SampleController.java</a> but create some data first <a href="/sample/create?name=test">SampleController.java</a></p>
-        <div id="created" th:text="${#dates.format(date)}">May 11, 2015</div>
-    </div>
-</body>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+
+  <head>
+    <link rel="stylesheet" th:href="@{//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style_form.css}"/>
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js}"></script>
+    <script th:src="@{ https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js}"></script>
+    <script th:src="@{ //maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/script_form.js}"></script>
+
+  </head>
+
+
+  <body ng-app="login">
+    <form class="create-login clearfix" name="createLogin" novalidate="novalidate">
+      <div class="form-group validation">
+        <label for="inputEmail">Email <span class="required-label">*</span></label>
+        <input type="email" class="form-control" id="inputEmail" name="inputEmail"
+               placeholder="Email" ng-model="email" required="required"/>
+        <div class="input-help"
+             ng-show="(createLogin.$submitted and createLogin.inputEmail.$invalid)
+             || (createLogin.inputEmail.$touched and createLogin.inputEmail.$invalid)">
+        	<p ng-show="createLogin.inputEmail.$error.required">This field is required</p>
+          <p ng-show="createLogin.inputEmail.$error.email">Enter a valid email</p>
+        </div>
+      </div>
+      
+      <div class="form-group validation">
+        <label for="createPassword">Password <span class="required-label">*</span></label>
+        <input type="password" class="form-control" id="createPassword" name="createPassword"
+               placeholder="Password" ng-model="password" password-validate="password-validate" required="required"/>
+        <div class="input-help" ng-show="(createLogin.$submitted and createLogin.createPassword.$invalid) || (createLogin.createPassword.$touched and createLogin.createPassword.$invalid)">
+            <div ng-show="createLogin.createPassword.$error.required"><p>This field is required</p></div>
+            <div ng-show="createLogin.createPassword.$error.pwd">
+                <p>Password must meet the following requirements:</p>
+                <ul>
+                  <li ng-class="pwdHasLetter">At least <strong>one letter</strong></li>
+                  <li ng-class="pwdHasNumber">At least <strong>one number</strong></li>
+                  <li ng-class="pwdValidLength">Be at least <strong>8 characters</strong></li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      
+      <div class="form-group validation">
+        <label for="confirmPassword">Password Confirmation <span class="required-label">*</span></label>
+        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+               placeholder="Password" ng-model="verifyPass" required="required" data-password-verify="password"/>
+        <div class="input-help"
+             ng-show="(createLogin.$submitted and createLogin.confirmPassword.$invalid)
+             || (createLogin.confirmPassword.$touched and createLogin.confirmPassword.$invalid)">
+        	<p ng-show="createLogin.confirmPassword.$error.required">This field is required</p>
+          <p ng-show="createLogin.confirmPassword.$error.passwordVerify">Password don't match</p>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary pull-right">Submit</button>
+    </form>
+  </body>
+
 </html>

@@ -7,8 +7,7 @@ import com.proxsoftware.webapp.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,12 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 @Controller
 @PropertySource("classpath:app.properties")
+@Lazy
 public class AccountController {
     private Logger log = LoggerFactory.getLogger(AccountController.class);
 
@@ -33,17 +31,8 @@ public class AccountController {
     private Boolean requireActivation = false;
 
     @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    private List<AccountRepository> repositories;
-
-    @Qualifier(value = "myXmlRepository")
-    @Autowired
     private AccountRepository accountRepository;
 
-    /*@Autowired
-    private AuthenticationManager authenticationManager;*/
 
     @Autowired
     private AccountServiceIml1 accountService;
@@ -58,9 +47,7 @@ public class AccountController {
 
     @RequestMapping("/login")
     public String login(AccountEntity user) {
-        System.out.println("Now logged: " + SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println("repositories: " + repositories);
-        System.out.println("All beans: " + Arrays.toString(context.getBeanDefinitionNames()));
+        log.info("Now logged: "+SecurityContextHolder.getContext().getAuthentication().getName());
         return "user/login";
     }
 
@@ -71,7 +58,9 @@ public class AccountController {
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public String registerPost(@Valid AccountEntity user, BindingResult result) {
-        if (result.hasErrors()) {
+        boolean b = result.hasErrors();
+        if (b) {
+            log.error("Account validation error: " + result.getAllErrors());
             return "user/register";
         }
 
@@ -80,7 +69,7 @@ public class AccountController {
             mailService.sendNewRegistration(user.getEmail(), registeredUser.getToken());
             if (!requireActivation) {
                 accountService.autoLogin(user.getUserName());
-                System.out.println("from act");
+                log.info("Account registered: "+registeredUser.getEmail());
                 return "redirect:/data/get";
             }
             return "user/register-success";
@@ -129,6 +118,7 @@ public class AccountController {
     @RequestMapping("/user/delete")
     public String delete(Long id) {
         accountService.delete(id);
+        log.info("Account with id = "+id+" deleted");
         return "redirect:/user/list";
     }
 

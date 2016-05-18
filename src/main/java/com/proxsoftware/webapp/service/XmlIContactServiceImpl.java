@@ -2,36 +2,27 @@ package com.proxsoftware.webapp.service;
 
 import com.proxsoftware.webapp.entity.AccountEntity;
 import com.proxsoftware.webapp.entity.ContactEntity;
-import com.proxsoftware.webapp.repository.XmlRepository;
+import com.proxsoftware.webapp.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * Created by Proxima on 22.04.2016.
  */
-@Service(value = "xmlContactService")
-//@Profile(value = "xml")
+@Service()
+@Lazy
+@Profile(value = "file")
 public class XmlIContactServiceImpl implements IContactService {
 
     @Autowired
-    private XmlRepository repo;
+    private FileRepository repo;
+
     private AccountEntity account;
-    private String accountUserName;
-
-    public String getAccountUserName() {
-        return accountUserName;
-    }
-
-    public void setAccountUserName(String accountUserName) {
-        this.accountUserName = accountUserName;
-    }
 
 
     public AccountEntity getAccount() {
@@ -43,25 +34,11 @@ public class XmlIContactServiceImpl implements IContactService {
     }
 
     @Override
-    public List<ContactEntity> findAll() {
-        this.accountUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        /*if (account == null) {
-            account = repo.getAccount(accountUserName);
-        }*/
-        account = repo.getAccount(accountUserName);
-        //TODO id for first contact always 0
-        Map<Long, ContactEntity> contactMap = account.getContactMap();
-        System.out.println("from findAll :" + contactMap);
-        Collection<ContactEntity> values1 = contactMap.values();
-        if (!values1.isEmpty()) {
-            return values1.stream().collect(Collectors.toList());
-        } else {
-            return new ArrayList<>();
+    public List<ContactEntity> findAllByAccount(AccountEntity account) {
+        if (Objects.isNull(this.account)) {
+            this.account = account;
         }
-       /* Collection<ContactEntity> values = repo.getAccount(accountUserName).getContactMap().values().isEmpty()
-                ? repo.getAccount(accountUserName).getContactMap().values()
-                : new ArrayList<>();
-        //TODO make more perfomance*/
+        return repo.findAllContacts(account);
     }
 
     @Override
@@ -71,8 +48,14 @@ public class XmlIContactServiceImpl implements IContactService {
 
     @Override
     public ContactEntity save(ContactEntity entity) {
-        account.getContactMap().put(entity.getIdForXml(), entity);
-        return repo.addContact(account, entity);
+        ContactEntity saveContact = repo.addContact(account, entity);
+        account.getContactMap().put(saveContact.getId(), saveContact);
+        return saveContact;
+    }
+    public ContactEntity save(ContactEntity entity,AccountEntity account) {
+        ContactEntity saveContact = repo.addContact(account, entity);
+        account.getContactMap().put(saveContact.getId(), saveContact);
+        return saveContact;
     }
 
     @Override

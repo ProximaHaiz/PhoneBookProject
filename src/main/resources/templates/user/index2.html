@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script src="script.js"></script>
+</head>
+
+<body ng-app="login">
+<form class="create-login clearfix" name="createLogin" novalidate>
+	<div class="form-group validation">
+		<label for="inputEmail">Email <span class="required-label">*</span></label>
+		<input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email" ng-model="email" required>
+		<div class="input-help" ng-show="(createLogin.$submitted && createLogin.inputEmail.$invalid) || (createLogin.inputEmail.$touched && createLogin.inputEmail.$invalid)">
+			<p ng-show="createLogin.inputEmail.$error.required">This field is required</p>
+			<p ng-show="createLogin.inputEmail.$error.email">Enter a valid email<p>
+		</div>
+	</div>
+
+	<div class="form-group validation">
+		<label for="createPassword">Password <span class="required-label">*</span></label>
+		<input type="password" class="form-control" id="createPassword" name="createPassword" placeholder="Password" ng-model="password" password-validate required>
+		<div class="input-help" ng-show="(createLogin.$submitted && createLogin.createPassword.$invalid) || (createLogin.createPassword.$touched && createLogin.createPassword.$invalid)">
+			<div ng-show="createLogin.createPassword.$error.required"><p>This field is required</p></div>
+			<div ng-show="createLogin.createPassword.$error.pwd">
+				<p>Password must meet the following requirements:</p>
+				<ul>
+					<li ng-class="pwdHasLetter">At least <strong>one letter</strong></li>
+					<li ng-class="pwdHasNumber">At least <strong>one number</strong></li>
+					<li ng-class="pwdValidLength">Be at least <strong>8 characters</strong></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group validation">
+		<label for="confirmPassword">Password Confirmation <span class="required-label">*</span></label>
+		<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Password" ng-model="verifyPass" required data-password-verify="password">
+		<div class="input-help" ng-show="(createLogin.$submitted && createLogin.confirmPassword.$invalid) || (createLogin.confirmPassword.$touched && createLogin.confirmPassword.$invalid)">
+			<p ng-show="createLogin.confirmPassword.$error.required">This field is required</p>
+			<p ng-show="createLogin.confirmPassword.$error.passwordVerify">Password don't match<p>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary pull-right">Submit</button>
+</form>
+</body>
+
+</html>

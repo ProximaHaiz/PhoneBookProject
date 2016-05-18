@@ -23,11 +23,7 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Proxima on 22.04.2016.
- */
-//@Component
-//@Configuration
+
 @PropertySource("${classpath:app.properties}")
 @Component
 public class XmlUtils implements InitializingBean {
@@ -37,7 +33,6 @@ public class XmlUtils implements InitializingBean {
     private XStream xStream;
     private ObjectMapper mapper;
     private File file;
-
 
     private HierarchicalStreamDriver driver;
     @Value(value = "${file_store_name}")
@@ -50,7 +45,8 @@ public class XmlUtils implements InitializingBean {
     FileStoreEnum store;
 
     public XmlUtils() {
-        FILE_URI = "test1.json";
+
+       /* FILE_URI = "test1.json";
         store = FileStoreEnum.valueOf(getFileExtension(new File(FILE_URI)).toUpperCase());
         switch (store) {
             case TXT:
@@ -73,7 +69,7 @@ public class XmlUtils implements InitializingBean {
         xStream = new XStream(driver);
         xStream.processAnnotations(new Class[]{AccountEntity.class, ContactEntity.class});
 //        xStream.registerConverter(new MapEntryConverter());
-        file = new File(FILE_URI);
+        file = new File(FILE_URI);*/
     }
 
     private static String getFileExtension(File file) {
@@ -113,24 +109,8 @@ public class XmlUtils implements InitializingBean {
         return xStream;
     }
 
-    public void setxStream(XStream xStream) {
-        this.xStream = xStream;
-    }
-
-    public HierarchicalStreamDriver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(HierarchicalStreamDriver driver) {
-        this.driver = driver;
-    }
-
     public File getFile() {
         return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     @Override
@@ -156,7 +136,6 @@ public class XmlUtils implements InitializingBean {
         }
         xStream = new XStream(driver);
         xStream.processAnnotations(new Class[]{AccountEntity.class, ContactEntity.class});
-        xStream.registerConverter(new MapEntryConverter());
         file = new File(FILE_URI);
     }
 
@@ -175,6 +154,7 @@ public class XmlUtils implements InitializingBean {
                 writer.endNode();
             }
         }
+
         @Override
         public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
             Map<String, String> map = new HashMap<String, String>();
@@ -186,52 +166,10 @@ public class XmlUtils implements InitializingBean {
             }
             return map;
         }
-        //<editor-fold desc="MapEntry">
-   /* public static class MapEntryConverter implements Converter {
 
-        @Override
-        public boolean canConvert(Class clazz) {
-            return AbstractMap.class.isAssignableFrom(clazz);
-        }
-
-        @Override
-        public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-
-            AbstractMap map = (AbstractMap) value;
-            for (Object obj : map.entrySet()) {
-                Map.Entry entry = (Map.Entry) obj;
-                writer.startNode(entry.getKey().toString());
-                Object val = entry.getValue();
-                if (null != val) {
-                    writer.setValue(val.toString());
-                }
-                writer.endNode();
-            }
-
-        }
-
-        @Override
-        public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-
-            Map<String, String> map = new HashMap<String, String>();
-
-            while (reader.hasMoreChildren()) {
-                reader.moveDown();
-
-                String key = reader.getNodeName(); // nodeName aka element's name
-                String value = reader.getValue();
-                map.put(key, value);
-
-                reader.moveUp();
-            }
-
-            return map;
-        }*/
-        //</editor-fold>
     }
 }
 
-//</editor-fold>
 
 
 

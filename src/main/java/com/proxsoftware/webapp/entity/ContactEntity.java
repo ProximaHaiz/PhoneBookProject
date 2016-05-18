@@ -1,36 +1,39 @@
 package com.proxsoftware.webapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.proxsoftware.webapp.annotation.phone.MobileNumber;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "contactEntity")
 @Table(name = "contacts", indexes = {@Index(name = "fk_contact_idx", columnList =
         "id")})
 @XStreamAlias("contact")
 @JsonIgnoreProperties({"user"})
 public class ContactEntity extends AbstractEntity {
-
-
-    private int mobile_number;
-    private int home_number;
+    private String home_number;
     private String email;
     private String address;
     private AccountEntity user;
+    private String mobile_number;
 
-
-    @XStreamAlias(value = "account_id")
-    @Transient
-    private long idForXml;
-
-    public long getIdForXml() {
-        return idForXml;
+    @Basic
+    @Column(name = "mobile_number")
+    @MobileNumber(message = "support only ukrainian operators")
+    public String getMobile_number() {
+        return mobile_number;
     }
 
-    public void setIdForXml(long idForXml) {
-        this.idForXml = idForXml;
+    public void setMobile_number(String mobile_number) {
+        this.mobile_number = addPrefix(mobile_number);
+    }
+
+    private String addPrefix(String number) {
+        return number.contains("+38") ? number : "+38" + number;
     }
 
     @ManyToOne()
@@ -45,21 +48,20 @@ public class ContactEntity extends AbstractEntity {
     /*private AddressEntity address;*/
 
     public ContactEntity(String firstName, String lastName
-            , String middle_name, int mobile_number, int home_number
-            , String email, String address, long idForXml) {
+            , String middle_name, String mobile_number, String home_number
+            , String email, String address) {
         super(firstName, middle_name, lastName);
         this.mobile_number = mobile_number;
         this.home_number = home_number;
         this.email = email;
         this.address = address;
-        this.idForXml = idForXml;
     }
 
     public ContactEntity(String firstName,
                          String lastName,
                          String middle_name,
-                         int mobile_number,
-                         int home_number,
+                         String mobile_number,
+                         String home_number,
                          String email,
                          String address,
                          AccountEntity user) {
@@ -76,22 +78,14 @@ public class ContactEntity extends AbstractEntity {
 
 
     @Basic
-    @Column(name = "mobile_number")
-    public int getMobile_number() {
-        return mobile_number;
-    }
-
-    public void setMobile_number(int mobile_number) {
-        this.mobile_number = mobile_number;
-    }
-
-    @Basic
     @Column(name = "home_number")
-    public int getHome_number() {
+    @Size(min = 15,message = "incorrect number")
+    @NotNull(message = "can not be empty")
+    public String getHome_number() {
         return home_number;
     }
 
-    public void setHome_number(int home_number) {
+    public void setHome_number(String home_number) {
         this.home_number = home_number;
     }
 
@@ -108,6 +102,7 @@ public class ContactEntity extends AbstractEntity {
 
     @Basic
     @Column(name = "address")
+    @Size(min = 4,message = "length must be more than 4 characters")
     public String getAddress() {
         return address;
     }
@@ -123,20 +118,19 @@ public class ContactEntity extends AbstractEntity {
         if (!(o instanceof ContactEntity)) return false;
         if (!super.equals(o)) return false;
         ContactEntity that = (ContactEntity) o;
-        return mobile_number == that.mobile_number &&
-                Objects.equals(email, that.email);
+        return Objects.equals(getMobile_number(), that.mobile_number) &&
+                Objects.equals(getEmail(), that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), mobile_number, email);
+        return Objects.hash(super.hashCode(), getMobile_number(), getEmail());
     }
 
     @Override
     public String toString() {
         return "\n      contact[" +
                 "id=" + id +
-                "XmlId='"+idForXml+'\''+
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", midle_name='" + middleName + '\'' +
@@ -144,22 +138,7 @@ public class ContactEntity extends AbstractEntity {
                 ", home_number=" + home_number +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                "]," /*{" + user.getId() + "," + user.getName() + ", " + user.getFirstName() + "," +
-                user.getMiddleName() + ", " + user.getLastName()*/;
+                ", phoneString= " + mobile_number +
+                "],";
     }
-
-    public String myToString() {
-        return "\n      contact[" +
-                "id=" + idForXml +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", midle_name='" + middleName + '\'' +
-                ", mobile_number=" + mobile_number +
-                ", home_number=" + home_number +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ']';
-    }
-
-
 }

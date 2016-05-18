@@ -1,9 +1,11 @@
 package com.proxsoftware.webapp.service;
 
+import com.proxsoftware.webapp.controller.AccountController;
 import com.proxsoftware.webapp.entity.AccountEntity;
 import com.proxsoftware.webapp.repository.AccountRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -29,9 +31,10 @@ public class AccountServiceIml1 implements UserDetailsService {
     //    @Value("${app.secret}")
     private String applicationSecret;
 
-    @Qualifier("myXmlRepository")
     @Autowired
     private AccountRepository repo;
+
+    private Logger log = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     Environment env;
@@ -80,6 +83,7 @@ public class AccountServiceIml1 implements UserDetailsService {
         if (this.repo.findOneByUserName(user.getUserName()) == null) {
             String activation = createActivationToken(user, false);
             user.setToken(activation);
+//            user.setId(new Random().nextLong());
             this.repo.save(user);
             return user;
         }
@@ -93,7 +97,7 @@ public class AccountServiceIml1 implements UserDetailsService {
     }
 
     public Boolean delete(Long id) {
-        this.repo.delete(id);
+        this.repo.deleteAccountById(id);
         return true;
     }
 
@@ -106,7 +110,7 @@ public class AccountServiceIml1 implements UserDetailsService {
         if (u != null) {
             System.out.println("from if");
             u.setToken("1");
-            this.repo.save(u);
+            this.repo.saveAndFlush(u);
             return u;
         }
         return null;
@@ -117,7 +121,7 @@ public class AccountServiceIml1 implements UserDetailsService {
         String activationToken = encoder.encodePassword(user.getUserName(), applicationSecret);
         if (save) {
             user.setToken(activationToken);
-            this.repo.save(user);
+            this.repo.saveAndFlush(user);
         }
         return activationToken;
     }
@@ -146,7 +150,7 @@ public class AccountServiceIml1 implements UserDetailsService {
         if (u != null) {
             u.setPassword(encodeUserPassword(user.getPassword()));
             u.setToken("1");
-            this.repo.save(u);
+            this.repo.saveAndFlush(u);
             return true;
         }
         return false;

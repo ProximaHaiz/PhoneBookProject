@@ -10,10 +10,11 @@ body {
     margin-bottom: 60px;
 }
 
-.logout{
+.logout {
     float: right;
 }
-.header{
+
+.header {
     width: auto;
 }
 
@@ -29,14 +30,16 @@ body {
 
 .table2 {
     border: 1px red;
+    /*width: 600px;*/
+    margin: auto;
 }
 
 .table {
     /*max-width:100%;*/
     /*height: 400px;*/
 }
-.table .table {
 
+.table .table {
 
 }
 
@@ -79,31 +82,66 @@ body > .container {
     float: right;
 }
 
-.navbar-locale{
+.navbar-locale {
     width: 100%;
 }
 
-.model-container{
+.model-container {
     width: 400px;
     height: 560px;
 }
 
-.new_form{
+.new_form {
+    margin-top: 10px;
 
 }
-.new_form button{
-    width: 25%;
 
-    float: right;
+.new_form button {
+    text-align: center;
+    width: 46%;
+    float: left;
 }
-.new_form a{
+
+.new_form a {
+    text-align: center;
     float: right;
-    width: 25%;
-    margin-left: 15px;
-    margin-right: 10px;
+    width: 45%;
 
 }
 
 code {
     font-size: 80%;
 }
+
+.error {
+    color: red;
+    padding: 10px;
+}
+
+.error input {
+    background: green;
+}
+
+.field_group_bottom {
+    /*margin-bottom: 0px;*/
+    margin: auto;
+}
+
+.field_group_bottom input, label {
+    height: 44px;
+
+}
+
+.form-aligin {
+
+}
+
+.form_title {
+
+}
+
+.form_title h3 {
+    text-align: center;
+}
+
+
