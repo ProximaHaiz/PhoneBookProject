@@ -3,8 +3,6 @@ package com.proxsoftware.webapp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"com.proxsoftware.webapp.*"})
 @EnableTransactionManagement
 //@EntityScan(basePackageClasses = new Clas)
-public class Application implements EmbeddedServletContainerCustomizer {
+public class Application /*implements EmbeddedServletContainerCustomizer*/ {
 
 
     @Value(value = "${file_uri}")
@@ -25,11 +23,11 @@ public class Application implements EmbeddedServletContainerCustomizer {
         SpringApplication.run(Application.class, args);
     }
 
-    @Override
+    /*@Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
         System.out.println("from costomize");
         container.setPort(8083);
-    }
+    }*/
 
     /*@Configuration
     public static class BeanPostProcessorConfiguration {
