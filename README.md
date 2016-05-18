@@ -8,6 +8,9 @@ Technologies used:
 - Jackson
 - Bootstrap
 - Java SE 8
+- JQuery
 
 In resources/app.properties and resources/application.properties you can set: http port, choose data storage (database - set "db" or file - set "file"), satasource preperesies
+
+By default, the Hsqldb database is used
 
